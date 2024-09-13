@@ -1,7 +1,6 @@
 import { Box, Button, Typography } from "@mui/material"
 import { useStyles } from "./styles/navbar_styles";
 import Avatar from '@mui/material/Avatar';
-import flick from '../images/flickr_527573.png'; 
 
 const Navbar = ({email, logout}) => {
     const classes = useStyles()

@@ -41,10 +41,9 @@ const Upload = () => {
         }
     }
 
-
     return (
         <Box className={classes.container1}>
-            <Navbar email={currentUser?.email} logout={logout}/>
+            <Navbar email={currentUser?.currentUser?.email} logout={logout}/>
             <Box className={classes.container2}>
                 <Box className={classes.container4}>
                     <Typography variant='body2'>

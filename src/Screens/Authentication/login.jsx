@@ -4,7 +4,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from 'react-router-dom';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { handleAuthSuccess } from '../../utils/handle_others';
 import { sendResetEmail, signInWithGoogle } from '../../utils/handle_form';
