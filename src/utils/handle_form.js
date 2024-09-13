@@ -1,7 +1,8 @@
 import { auth, provider } from "../firebase";
-import { getErrorMessage, handleAuthSuccess } from "./handle_others";
+import { deleteCookie, getErrorMessage, handleAuthSuccess } from "./handle_others";
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
+import { signOut } from 'firebase/auth';
 
 export async function signInWithGoogle() {
   try {
@@ -36,4 +37,27 @@ export const sendResetEmail = async (email) => {
       toast.error(errorMessage);
       console.error("Error sending password reset email:", error.message);
   }
+};
+
+export const logout = async () => {
+  try {
+      await signOut(auth)
+      deleteCookie('boo-ik_token');
+  } catch (error) {
+      
+  }
+}
+
+export const handleFileChange = (event, setSelectedFile, setFileUrl) => {
+  const file = event.target.files[0];
+  if (file) {
+    setSelectedFile(file);
+    const fileUrl = URL.createObjectURL(file);
+    setFileUrl(fileUrl);
+    console.log("Selected file:", file);
+  }
+};
+
+export const handleIconClick = () => {
+  document.getElementById('fileInput').click();
 };

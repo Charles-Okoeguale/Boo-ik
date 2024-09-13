@@ -9,15 +9,14 @@ import { LinearProgressWithLabel } from '../../components/linear_progress';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UseAuth from '../../hook/useAuth';
 import Navbar from '../../components/navbar';
-import { signOut, getAuth } from 'firebase/auth';
-import { deleteCookie } from '../../utils/handle_others';
+import { handleFileChange, handleIconClick, logout} from '../../utils/handle_form';
 
 const Upload = () => {
     const currentUser = UseAuth()
     const classes = useStyles();
-   
-    const auth = getAuth()
     const [progress, setProgress] = useState(10);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [fileUrl, setFileUrl] = useState(null);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -32,15 +31,6 @@ const Upload = () => {
         value: PropTypes.number.isRequired,
     };
 
-    const logout = async () => {
-        try {
-            await signOut(auth)
-            deleteCookie('boo-ik_token');
-        } catch (error) {
-            
-        }
-    }
-
     return (
         <Box className={classes.container1}>
             <Navbar email={currentUser?.currentUser?.email} logout={logout}/>
@@ -52,8 +42,29 @@ const Upload = () => {
                     <CloseIcon/>
                 </Box>
                 <Box className={classes.container3}>
-                    <DescriptionIcon sx={styles2}/>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: 'none' }}
+                        accept=".pdf"
+                        onChange={(event) => handleFileChange(event, setSelectedFile, setFileUrl)}
+                    />
+                    <DescriptionIcon sx={styles2} onClick={handleIconClick} />
                     <Typography variant='body2'>Choose file</Typography>
+                    {selectedFile && (
+                        <Typography variant='body2'>{selectedFile.name}</Typography>
+                    )}
+                    {/* {fileUrl && (
+                        <Box mt={2}>
+                            <iframe
+                                src={fileUrl}
+                                style={{ width: '100%', height: '500px' }}
+                                title="PDF Preview"
+                            >
+
+                            </iframe>
+                        </Box>
+                    )} */}
                 </Box>
                 <Box className={classes.container5}>
                     <Box className={classes.container10}>

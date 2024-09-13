@@ -6,7 +6,8 @@ export const styles1 = {
 }
 
 export const styles2 = {
-    fontSize: '5em'
+    fontSize: '5em',
+    cursor: 'pointer'
 }
 
 

@@ -1,6 +1,8 @@
+import { getAuth } from "firebase/auth"
+
 export const setCookie = (name, value, days) => {
     const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Set expiration in days
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     const expires = "expires=" + date.toUTCString();
     document.cookie = name + "=" + value + ";" + expires + ";path=/";
 };
@@ -16,7 +18,17 @@ export const getCookie = (name) => {
   return null;
 };
 
-export const checkTokenInCookie = (tokenName) => {
-  const token = getCookie(tokenName);
-  return token !== null;
+export const getAuthToken = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user) {
+      try {
+          return await user.getIdToken();
+      } catch (error) {
+          console.error("Error getting token:", error);
+          return null;
+      }
+  } else {
+      return null;
+  }
 };
