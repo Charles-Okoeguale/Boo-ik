@@ -1,5 +1,5 @@
 import {Box, Typography, TextField, FormHelperText, Button} from '@mui/material'
-import { useStyles } from '../../Screens/styles/verification_styles';
+import { useStyles } from '../styles/verification_styles';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';

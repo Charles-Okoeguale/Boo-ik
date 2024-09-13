@@ -1,9 +1,9 @@
-import Login from './Screens/Authentication/login';
-import Verification from './Screens/Authentication/verifcation_code';
-import Upload from './Screens/Main/upload_screen';
-import Signup from './Screens/Authentication/signup';
+import Login from './screens/Authentication/login';
+import Verification from './screens/Authentication/verifcation_code';
+import Upload from './screens/Main/upload_screen';
+import Signup from './screens/Authentication/signup';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NotFound from './Screens/Authentication/404_not_found';
+import NotFound from './screens/Authentication/404_not_found';
 
 function App() {
   return (

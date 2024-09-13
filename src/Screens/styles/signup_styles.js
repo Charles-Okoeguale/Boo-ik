@@ -1,10 +1,15 @@
 import { makeStyles } from "@mui/styles";
 
-
-
 export const styles2 = {
     fontSize: '1.5em', 
     fontWeight: 700
+}
+
+export const styles4 = {
+    fontFamily: 'Space Grotesk',
+    fontWeight: 700,
+    color: 'black',
+    marginBottom: '2em',
 }
 
 export const styles3 = {
@@ -35,10 +40,10 @@ export const useStyles = makeStyles((theme) => ({
             width: '90%',
             textTransform: 'none',
             height: '3.5em',
-            background: '#FFFFFF',
+            background: '#000000',
             border: '1px solid lightgrey',
             boxShadow: 'none',
-            color: '#000000',
+            color: '#FFFFFF',
             fontWeight: 'bold',
             borderRadius: '0.5em',
             marginBottom: '3em'
@@ -48,6 +53,7 @@ export const useStyles = makeStyles((theme) => ({
             height: '3em',
             marginBottom: '1em',
             borderRadius: '0.5em',
+            fontFamily: 'Space Grotesk'
         },
         "& .MuiFormControl-root": {
             width: '100%',
@@ -59,7 +65,9 @@ export const useStyles = makeStyles((theme) => ({
            alignSelf: 'flex-start',
            marginLeft: '2.1em',
            marginTop: '-0.9em',
-           marginBottom: '6em'
+           marginBottom: '6em',
+           fontFamily: 'Space Grotesk',
+           fontWeight: 900
         }
     },
     container3: {
@@ -101,7 +109,7 @@ export const useStyles = makeStyles((theme) => ({
             height: '3em',
             borderRadius: '0.5em',
             textTransform: 'none',
-            background: '#0096FF',   // Blue background for the contained button (Sign up)
+            background: '#0000FF',   // Blue background for the contained button (Sign up)
             color: 'white',       // White text on the blue background
         },
     }

@@ -7,9 +7,12 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgressWithLabel } from '../../components/linear_progress';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import UseAuth from '../../hook/useAuth';
 
 
 const Upload = () => {
+    const currentUser = UseAuth()
+    console.log(currentUser)
     const classes = useStyles();
     const handleClick = () => {
         console.log('clicked')

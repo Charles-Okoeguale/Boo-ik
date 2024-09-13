@@ -75,7 +75,7 @@ export const useStyles = makeStyles((theme) => ({
             height: '3em',
             borderRadius: '0.5em',
             textTransform: 'none',
-            background: '#0096FF',   // Blue background for the contained button (Sign up)
+            background: '#0000FF',   // Blue background for the contained button (Sign up)
             color: 'white',       // White text on the blue background
         },
       },

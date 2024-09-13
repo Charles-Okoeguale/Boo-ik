@@ -1,5 +1,5 @@
 import {Box, Typography, Button, Divider, OutlinedInput, FormHelperText, FormControl } from '@mui/material'
-import { styles2, styles3, useStyles } from '../../Screens/styles/signup_styles';
+import { styles2, styles3, useStyles } from '../styles/signup_styles';
 import GoogleIcon from '@mui/icons-material/Google';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
