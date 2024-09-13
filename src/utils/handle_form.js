@@ -1,6 +1,6 @@
 import { auth, provider } from "../firebase";
 import { handleAuthSuccess } from "./handle_others";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup } from "firebase/auth";
 
 export async function signInWithGoogle() {
     try {
@@ -21,3 +21,12 @@ export async function signInWithGoogle() {
       console.error("Error during sign-up:", error);
     }
   }
+
+  export const sendResetEmail = async (email) => {
+    try {
+        await sendPasswordResetEmail(auth, email);
+        console.log("Password reset email sent successfully!");
+    } catch (error) {
+        console.error("Error sending password reset email:", error.message);
+    }
+};

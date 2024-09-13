@@ -4,10 +4,10 @@ import GoogleIcon from '@mui/icons-material/Google';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { handleAuthSuccess } from '../../utils/handle_others';
-import { signInWithGoogle } from '../../utils/handle_form';
+import { sendResetEmail, signInWithGoogle } from '../../utils/handle_form';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -17,8 +17,13 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        console.log('clicked')
+    const handleClick = async (e) => {
+        e.preventDefault();
+        if (!email) {
+            console.error("Please enter an email address.");
+            return;
+        }
+        await sendResetEmail(email);
     }
 
     const handleGoogleSignIn = async () => {
