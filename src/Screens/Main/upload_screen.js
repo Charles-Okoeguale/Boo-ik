@@ -1,5 +1,5 @@
 import {Box, Typography, Button } from '@mui/material'
-import { useStyles } from '../styles/upload_styles';
+import { styles1, styles2, useStyles } from '../styles/upload_styles';
 import CloseIcon from '@mui/icons-material/Close';
 import DescriptionIcon from '@mui/icons-material/Description';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
@@ -29,19 +29,19 @@ const Upload = () => {
     LinearProgressWithLabel.propTypes = {
         value: PropTypes.number.isRequired,
     };
-    
+
 
     return (
         <Box className={classes.container1}>
             <Box className={classes.container2}>
                 <Box className={classes.container4}>
                     <Typography variant='body2'>
-                        <span style={{fontSize: '1.5em', fontWeight: 700}}>Upload file</span>
+                        <span style={styles1}>Upload file</span>
                     </Typography>
                     <CloseIcon/>
                 </Box>
                 <Box className={classes.container3}>
-                    <DescriptionIcon sx={{fontSize: '5em'}}/>
+                    <DescriptionIcon sx={styles2}/>
                     <Typography variant='body2'>Choose file</Typography>
                 </Box>
                 <Box className={classes.container5}>
@@ -52,7 +52,7 @@ const Upload = () => {
                         <Typography variant='body2'>
                             MEE522.pdf
                             <br/>
-                            context...
+                            Consuming context...
                         </Typography>
                         <CloseIcon/>
                     </Box>

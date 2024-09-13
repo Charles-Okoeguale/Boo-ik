@@ -1,5 +1,15 @@
 import { makeStyles } from "@mui/styles";
 
+export const styles1 = {
+    fontSize: '1.5em', 
+    fontWeight: 700
+}
+
+export const styles2 = {
+    fontSize: '5em'
+}
+
+
 export const useStyles = makeStyles((theme) => ({
 	container1: {
         width: '100%',

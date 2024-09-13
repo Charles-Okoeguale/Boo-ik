@@ -1,8 +1,9 @@
 import {Box, Typography, Button, Divider, OutlinedInput, FormHelperText, FormControl} from '@mui/material'
-import { useStyles } from '../../Screens/styles/signup_styles';
+import { styles2, useStyles } from '../../Screens/styles/signup_styles';
 import GoogleIcon from '@mui/icons-material/Google';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
     const classes = useStyles();
@@ -14,9 +15,11 @@ const Signup = () => {
                         <SwitchAccessShortcutAddIcon/>
                     </Box>
                     <Typography variant='body2'>
-                        <span style={{fontSize: '1.5em', fontWeight: 700}}>Create an account </span>
-                        <br /> Already have an account? <span style={{fontWeight: 'bold'}}>
-                        Login</span>
+                    <span style={styles2}>Create an account</span>
+                        <br /> Already have an account? 
+                        <span style={{fontWeight: 'bold', textDecoration: 'none'}}>
+                        <Link to="/auth/login">{' '}Login</Link>
+                    </span>
                     </Typography>
                 </Box>
                 <Button variant="contained" startIcon={<GoogleIcon/>}>
