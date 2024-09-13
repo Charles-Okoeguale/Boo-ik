@@ -10,7 +10,6 @@ export async function signInWithGoogle() {
       console.error("Error during Google sign-in:", error);
     }
   }
-  
 
   export async function signUpWithEmailAndPassword(email, password, setEmail, setPassword) {
     try {

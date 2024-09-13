@@ -8,16 +8,15 @@ import PropTypes from 'prop-types';
 import { LinearProgressWithLabel } from '../../components/linear_progress';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UseAuth from '../../hook/useAuth';
-
+import Navbar from '../../components/navbar';
+import { signOut, getAuth } from 'firebase/auth';
+import { deleteCookie } from '../../utils/handle_others';
 
 const Upload = () => {
     const currentUser = UseAuth()
-    console.log(currentUser)
     const classes = useStyles();
-    const handleClick = () => {
-        console.log('clicked')
-    }
-
+   
+    const auth = getAuth()
     const [progress, setProgress] = useState(10);
 
     useEffect(() => {
@@ -33,9 +32,19 @@ const Upload = () => {
         value: PropTypes.number.isRequired,
     };
 
+    const logout = async () => {
+        try {
+            await signOut(auth)
+            deleteCookie('boo-ik_token');
+        } catch (error) {
+            
+        }
+    }
+
 
     return (
         <Box className={classes.container1}>
+            <Navbar email={currentUser?.email} logout={logout}/>
             <Box className={classes.container2}>
                 <Box className={classes.container4}>
                     <Typography variant='body2'>
@@ -55,7 +64,7 @@ const Upload = () => {
                         <Typography variant='body2'>
                             MEE522.pdf
                             <br/>
-                            Consuming context...
+                            uploading document...
                         </Typography>
                         <CloseIcon/>
                     </Box>
@@ -66,7 +75,6 @@ const Upload = () => {
                     <Button variant="contained" endIcon={<ArrowForwardIcon/>}>Next</Button>  
                 </Box>
             </Box>
-
         </Box>
     )
 }

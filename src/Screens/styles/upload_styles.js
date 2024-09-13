@@ -16,6 +16,7 @@ export const useStyles = makeStyles((theme) => ({
         height: '100vh',
         background: '#F7F7F7',
         display: 'flex',
+        flexDirection: 'column'
     },
     container2: {
         background: '#FFFFFF',

@@ -6,19 +6,23 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { signInWithGoogle, signUpWithEmailAndPassword } from '../../utils/handle_form';
+import { useNavigate } from 'react-router-dom'; 
 
 
 const Signup = () => {
     const classes = useStyles();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate();
 
     const handleGoogleSignIn = async () => {
         await signInWithGoogle();
-      };
+        navigate('/upload')
+    };
     
       const handleEmailSignUp = async () => {
         await signUpWithEmailAndPassword(email, password, setEmail, setPassword);
+        navigate('/upload')
       };
 
     return (
