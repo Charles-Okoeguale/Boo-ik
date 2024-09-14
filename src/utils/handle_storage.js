@@ -1,4 +1,18 @@
 import { getAuth } from "firebase/auth"
+// import cloudinary from '../cloudinary';
+
+// export const uploadPdf = async (filePath) => {
+//   try {
+//     const result = await cloudinary.uploader.upload(filePath, {
+//       resource_type: 'raw',
+//       folder: 'pdfs' 
+//     });
+//     return result.secure_url;
+//   } catch (error) {
+//     console.error('Error uploading PDF:', error);
+//     throw error;
+//   }
+// };
 
 export const setCookie = (name, value, days) => {
     const date = new Date();

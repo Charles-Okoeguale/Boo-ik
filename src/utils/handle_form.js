@@ -48,16 +48,14 @@ export const logout = async () => {
   }
 }
 
-export const handleFileChange = (event, setSelectedFile, setFileUrl) => {
+export const handleFileChange = (event, setSelectedFile) => {
   const file = event.target.files[0];
   if (file) {
     setSelectedFile(file);
-    const fileUrl = URL.createObjectURL(file);
-    setFileUrl(fileUrl);
-    console.log("Selected file:", file);
   }
 };
 
 export const handleIconClick = () => {
   document.getElementById('fileInput').click();
 };
+

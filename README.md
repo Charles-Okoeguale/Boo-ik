@@ -68,3 +68,136 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+Here’s a simplified version of the steps:
+
+1. **Set Up React Project**  
+   Create your React project using `Create React App`:
+   ```bash
+   npx create-react-app pdf-chat-app
+   cd pdf-chat-app
+   ```
+
+2. **Install Required Libraries**  
+   Install libraries for PDF viewing and API communication:
+   ```bash
+   npm install @react-pdf-viewer/core @react-pdf-viewer/default-layout axios
+   ```
+
+3. **Create the PDF Viewer Component**  
+   Create a `PdfViewer` component to display PDFs and handle text selection:
+   ```jsx
+   import React from 'react';
+   import { Worker, Viewer } from '@react-pdf-viewer/core';
+   import '@react-pdf-viewer/core/lib/styles/index.css';
+   import { pdfjs } from 'react-pdf';
+
+   pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+
+   const PdfViewer = ({ fileUrl, onTextSelect }) => {
+     const handleTextSelection = (selection) => {
+       const selectedText = selection.toString();
+       if (selectedText) {
+         onTextSelect(selectedText);
+       }
+     };
+
+     return (
+       <div style={{ height: '80vh', width: '100%' }}>
+         <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`}>
+           <Viewer
+             fileUrl={fileUrl}
+             onSelectionChange={handleTextSelection}
+           />
+         </Worker>
+       </div>
+     );
+   };
+
+   export default PdfViewer;
+   ```
+
+4. **Create the Chat Interface**  
+   Create a `ChatInterface` component to communicate with ChatGPT:
+   ```jsx
+   import React, { useState } from 'react';
+   import axios from 'axios';
+
+   const ChatInterface = ({ selectedText }) => {
+     const [input, setInput] = useState('');
+     const [response, setResponse] = useState('');
+
+     const handleSend = async () => {
+       try {
+         const result = await axios.post('https://api.openai.com/v1/completions', {
+           model: 'text-davinci-003',
+           prompt: `Highlighted text from PDF: "${selectedText}". User says: "${input}".`,
+           max_tokens: 150
+         }, {
+           headers: {
+             'Authorization': `Bearer YOUR_OPENAI_API_KEY`,
+             'Content-Type': 'application/json'
+           }
+         });
+
+         setResponse(result.data.choices[0].text.trim());
+       } catch (error) {
+         console.error('Error communicating with ChatGPT:', error);
+       }
+     };
+
+     return (
+       <div>
+         <textarea
+           value={input}
+           onChange={(e) => setInput(e.target.value)}
+           placeholder="Enter your prompt..."
+           style={{ width: '100%', height: '100px' }}
+         />
+         <button onClick={handleSend}>Send</button>
+         <div style={{ marginTop: '10px', border: '1px solid #ddd', padding: '10px', height: '200px', overflowY: 'auto' }}>
+           {response}
+         </div>
+       </div>
+     );
+   };
+
+   export default ChatInterface;
+   ```
+
+5. **Combine Components in Main App**  
+   Combine the `PdfViewer` and `ChatInterface` in your main `App` component:
+   ```jsx
+   import React, { useState } from 'react';
+   import PdfViewer from './PdfViewer';
+   import ChatInterface from './ChatInterface';
+
+   const App = () => {
+     const [selectedText, setSelectedText] = useState('');
+
+     const handleTextSelect = (text) => {
+       setSelectedText(text);
+     };
+
+     return (
+       <div style={{ padding: '20px' }}>
+         <h1>PDF Interaction with ChatGPT</h1>
+         <PdfViewer fileUrl="path/to/your/pdf.pdf" onTextSelect={handleTextSelect} />
+         {selectedText && <ChatInterface selectedText={selectedText} />}
+       </div>
+     );
+   };
+
+   export default App;
+   ```
+
+6. **Run the Application**  
+   Run the app using:
+   ```bash
+   npm start
+   ```
+
+This setup integrates PDF viewing, text selection, and interaction with ChatGPT.

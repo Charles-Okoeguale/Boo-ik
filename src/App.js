@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import NotFound from './screens/Authentication/404_not_found';
 import UseAuth from './hook/useAuth';
 import { ToastContainer } from 'react-toastify';
+import PDFViewer from './screens/Main/pdf_view';
 
 function App() {
   const { currentUser, loading } = UseAuth();
@@ -20,7 +21,12 @@ function App() {
           <Routes>
             <Route
               path="/upload"
+              index
               element={currentUser ? <Upload /> : <Navigate to="/auth/login" />}
+            />
+            <Route
+              path="/pdf_viewer"
+              element={currentUser ? <PDFViewer /> : <Navigate to="/auth/login" />}
             />
             <Route 
               path="/auth/login" 
