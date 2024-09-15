@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getDocument, GlobalWorkerOptions, version as pdfjsVersion } from 'pdfjs-dist';
 import 'pdfjs-dist/web/pdf_viewer.css'; 
-import { useLocation } from 'react-router-dom';
 
-// Set the worker source
 GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion}/pdf.worker.js`;
 
 const PDFViewer = () => {
@@ -11,25 +9,33 @@ const PDFViewer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pdf, setPdf] = useState(null);
   const canvasRef = useRef(null);
-  const location = useLocation();
-  const { pdfUrl } = location.state
+  const [pdfUrl, setPdfUrl] = useState()
+  
 
-  // Load PDF document
+  useEffect(() => {
+    const savedPdfUrl = localStorage.getItem('pdfUrl');
+    if (savedPdfUrl) {
+      setPdfUrl(savedPdfUrl);
+    } 
+  }, []);
+
+
   useEffect(() => {
     const loadPdf = async () => {
-      const loadingTask = getDocument(pdfUrl);
-      const loadedPdf = await loadingTask.promise;
-      setPdf(loadedPdf);
-      setNumPages(loadedPdf.numPages);
-
-      // Render first page
-      renderPage(loadedPdf, currentPage);
+        if (pdfUrl) { 
+            const loadingTask = getDocument(pdfUrl);
+            const loadedPdf = await loadingTask.promise;
+            setPdf(loadedPdf);
+            setNumPages(loadedPdf.numPages);
+            renderPage(loadedPdf, currentPage);
+        } else {
+            console.error('Invalid PDF URL:', pdfUrl);
+        }
     };
 
     loadPdf();
-  }, [pdfUrl]);
+}, [pdfUrl]);
 
-  // Function to render a page on the canvas
   const renderPage = async (pdf, pageNumber) => {
     const page = await pdf.getPage(pageNumber);
     const viewport = page.getViewport({ scale: 1.5 }); 
@@ -48,7 +54,6 @@ const PDFViewer = () => {
     page.render(renderContext);
   };
 
-  // Navigate between pages
   const handleNextPage = () => {
     if (currentPage < numPages) {
       setCurrentPage(currentPage + 1);
@@ -64,17 +69,22 @@ const PDFViewer = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
         <canvas ref={canvasRef}></canvas>
+        <div>
+          <button onClick={handlePreviousPage} disabled={currentPage <= 1}>
+            Previous Page
+          </button>
+          <button onClick={handleNextPage} disabled={currentPage >= numPages}>
+            Next Page
+          </button>
+        </div>
       </div>
-      <div>
-        <button onClick={handlePreviousPage} disabled={currentPage <= 1}>
-          Previous Page
-        </button>
-        <button onClick={handleNextPage} disabled={currentPage >= numPages}>
-          Next Page
-        </button>
+      <div style={{ width: '300px', marginLeft: '20px' }}>
+        {/* Chat interface goes here */}
+        <h2>Chat Interface</h2>
+        {/* Add your chat component or HTML here */}
       </div>
     </div>
   );

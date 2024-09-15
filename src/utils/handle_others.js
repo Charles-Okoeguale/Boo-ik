@@ -1,4 +1,6 @@
 import { setCookie } from "./handle_storage";
+import axios from 'axios';
+import { getAuth } from 'firebase/auth';
 
 export const handleAuthSuccess = async (user) => {
     const idToken = await user.getIdToken(); 
@@ -47,3 +49,47 @@ export function isCookieExists(cookieName) {
     const value = getCookieValue(cookieName);
     return value !== null && value !== '';
 }
+
+export const handleAnalyzePdf = async (selectedFile, setLoading, setAnalysed, toast) => {
+    if (!selectedFile) {
+        console.log('You need to upload a pdf file');
+        return;
+    }
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('upload_preset', 'vpwyqduo');
+    try {
+        const uploadResponse = await axios.post(
+            'https://api.cloudinary.com/v1_1/dcm42p2eg/upload',
+            formData
+        );
+
+        const pdfUrl = uploadResponse.data.secure_url;
+        const user = getAuth().currentUser;
+        if (!user) {
+            throw new Error('User is not authenticated');
+        }
+        const idToken = user.accessToken;
+        await axios.post('http://localhost:5000/api/process-pdf', {
+            pdfUrl: pdfUrl,
+            idToken: idToken
+        });
+        localStorage.setItem('pdfUrl', pdfUrl);
+        toast.success('PDF processed successfully!');
+        setAnalysed(true);
+    } catch (error) {
+        if (error.response) {
+            console.error('Error response:', error.response);
+            toast.error(`Error: ${error.response.data.message || 'Failed to upload or process PDF'}`);
+        } else if (error.request) {
+            console.error('Error request:', error.request);
+            toast.error('Error: No response from the server.');
+        } else {
+            console.error('Error message:', error.message);
+            toast.error(`Error: ${error.message}`);
+        }
+    } finally {
+        setLoading(false);
+    }
+};

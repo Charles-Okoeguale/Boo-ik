@@ -201,3 +201,14 @@ Here’s a simplified version of the steps:
    ```
 
 This setup integrates PDF viewing, text selection, and interaction with ChatGPT.
+
+
+
+
+
+
+
+Maintaining Conversation History:
+
+To simulate a persistent conversation, you need to manage the conversation history on your client side.
+Each time you send a new message, you include past messages and responses as part of the new API call. This way, ChatGPT can maintain context across messages.
