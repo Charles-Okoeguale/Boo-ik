@@ -22,13 +22,13 @@ export const useStyles = makeStyles((theme) => ({
     container2: {
         background: '#FFFFFF',
         width: '40%',
-       height: '60%',
+        height: '60%',
         margin: 'auto',
         borderRadius: '2em',
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-         paddingTop: '1.5em',
+        paddingTop: '1.5em',
         "& .MuiButton-contained": {
             width: '90%',
             textTransform: 'none',
@@ -51,9 +51,9 @@ export const useStyles = makeStyles((theme) => ({
     container3: {
         width: '90%',
         height: '60%',
-        display: 'flex',              // Enable Flexbox
-        flexDirection: 'column',       // Stack the icon and text vertically
-        justifyContent: 'center',      // Center content vertically
+        display: 'flex',        
+        flexDirection: 'column',       
+        justifyContent: 'center',      
         alignItems: 'center', 
         border: '1px dashed lightgrey',
         "& .MuiTypography-body2" : {

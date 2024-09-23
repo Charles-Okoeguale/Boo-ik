@@ -3,7 +3,7 @@ import { styles1, styles2, useStyles } from '../styles/upload_styles';
 import CloseIcon from '@mui/icons-material/Close';
 import DescriptionIcon from '@mui/icons-material/Description';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgressWithLabel } from '../../components/linear_progress';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -61,10 +61,11 @@ const Upload = () => {
         throw new Error('User is not authenticated');
       }
       const idToken = user.accessToken;
-      await axios.post('http://localhost:5000/api/process-pdf', {
+      const response = await axios.post('http://localhost:5000/api/process-pdf', {
         pdfUrl: pdfUrl,
         idToken: idToken
       });
+      console.log('summary', response.data.summary)
       setAnalysed(true); 
       localStorage.setItem('pdfUrl', pdfUrl);
       setProgress(100); 
@@ -86,7 +87,7 @@ const Upload = () => {
   };
 
   const handleNext = () => {
-    navigate('/pdf_viewer');
+    navigate('/pdf_viewer')
   };
 
   const cancel = () => {
