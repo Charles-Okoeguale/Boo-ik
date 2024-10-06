@@ -31,8 +31,8 @@ function App() {
               element={currentUser ? <Upload /> : <Navigate to="/auth/login" />}
             />
             <Route
-              path="/pdf_viewer"
-              element={currentUser ? <PDFViewer/> : <Navigate to="/auth/login" />}
+                path="/pdf_viewer/:pdfName"
+                element={currentUser ? <PDFViewer /> : <Navigate to="/auth/login" />}
             />
             <Route 
               path="/auth/login" 

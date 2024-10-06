@@ -71,6 +71,7 @@ const Upload = () => {
 
       setAnalysed(true);
       localStorage.setItem('pdfUrl', pdfUrl);
+      localStorage.setItem('pdfName',  selectedFile.name);
       setProgress(100);
       toast.success('PDF processed successfully!');
     } catch (error) {
@@ -93,7 +94,8 @@ const Upload = () => {
   
 
   const handleNext = () => {
-    navigate('/pdf_viewer')
+    const pdfName = localStorage.getItem('pdfName');
+    navigate(`/pdf_viewer/${encodeURIComponent(pdfName)}`);
   };
 
   const cancel = () => {

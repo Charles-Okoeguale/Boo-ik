@@ -8,6 +8,9 @@ export const useStyles = makeStyles(() => ({
         flexDirection: 'column', 
         height: '100%',
         alignItems: 'center',
+        "& .MuiTypography-body1": {
+            fontSize: '14px'
+        }
     }
   
 }));

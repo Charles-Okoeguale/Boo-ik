@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useStyles } from '../styles/pdf_viewer_styles';
 import ChatInterface from '../../components/chat_interface';
 import MyPdfViewer from '../../components/pdfViewer';
+import { useParams } from 'react-router-dom';
 
 const PDFViewer = () => {
   const classes = useStyles()
   const [pdf, setPdf] = useState()
+  const { pdfName } = useParams();
 
   useEffect(() => {
     const url = localStorage.getItem('pdfUrl')
@@ -16,7 +18,7 @@ const PDFViewer = () => {
   return (
     <Box className={classes.container1}>
       <Typography>
-        Cover.pdf
+        {pdfName}
       </Typography>
       <Box className={classes.container2}>
         <Box className={classes.viewer}>
@@ -28,3 +30,4 @@ const PDFViewer = () => {
   );
 };
 export default PDFViewer;
+
