@@ -9,18 +9,13 @@ export function LinearProgressWithLabel(props) {
     <Box className={classes.container}>
       <Box className={classes.progressContainer}>
         <LinearProgress
-          variant="determinate"
+          variant="indeterminate"
           {...props}
           classes={{
             root: classes.progressBar,
             bar: classes.progressBarColor,
           }}
         />
-      </Box>
-      <Box className={classes.percentageText}>
-        <Typography variant="body2">
-          {`${Math.round(props.value)}%`}
-        </Typography>
       </Box>
     </Box>
   );

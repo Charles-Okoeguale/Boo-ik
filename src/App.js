@@ -5,7 +5,8 @@ import Signup from './screens/Authentication/signup';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NotFound from './screens/Authentication/404_not_found';
 import UseAuth from './hook/useAuth';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PDFViewer from './screens/Main/pdf';
 
 function App() {

@@ -24,59 +24,64 @@ const Upload = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   LinearProgressWithLabel.propTypes = {
     value: PropTypes.number.isRequired,
   };
 
   const handleAnalyzePdf = async () => {
     if (!selectedFile) {
-      console.log('You need to upload a pdf file');
+      toast.warn('Please upload a PDF file.');
       return;
     }
-
+  
     setLoading(true);
     setProgress(0);
-
+  
     const formData = new FormData();
     formData.append('file', selectedFile);
     formData.append('upload_preset', 'vpwyqduo');
-
+  
     try {
       const uploadResponse = await axios.post(
         'https://api.cloudinary.com/v1_1/dcm42p2eg/upload',
-        formData
+        formData,
+        {
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percentCompleted);
+          },
+        }
       );
+  
       const pdfUrl = uploadResponse.data.secure_url;
+
       const user = getAuth().currentUser;
       if (!user) {
         throw new Error('User is not authenticated');
       }
-      const idToken = user.accessToken;
-      const response = await axios.post('http://localhost:5000/api/process-pdf', {
-        pdfUrl: pdfUrl,
-        idToken: idToken
+  
+      const idToken = await user.getIdToken();
+
+      await axios.post('http://localhost:5000/api/process-pdf', {
+        pdfUrl,
+        idToken,
       });
-      console.log('summary', response.data.summary)
-      setAnalysed(true); 
+
+      setAnalysed(true);
       localStorage.setItem('pdfUrl', pdfUrl);
-      setProgress(100); 
+      setProgress(100);
       toast.success('PDF processed successfully!');
     } catch (error) {
-      if (error.response) {
-        console.error('Error response:', error.response);
-        toast.error(`Error: ${error.response.data.message || 'Failed to upload or process PDF'}`);
-      } else if (error.request) {
-        console.error('Error request:', error.request);
-        toast.error('Error: No response from the server.');
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.error('Error response:', error.response);
+          toast.error(`Error: ${error.response.data.message || 'Failed to process PDF'}`);
+        } else if (error.request) {
+          console.error('Error request:', error.request);
+          toast.error('Server Error . Please try again later.');
+        }
       } else {
         console.error('Error message:', error.message);
         toast.error(`Error: ${error.message}`);
@@ -85,6 +90,7 @@ const Upload = () => {
       setLoading(false);
     }
   };
+  
 
   const handleNext = () => {
     navigate('/pdf_viewer')
@@ -132,9 +138,18 @@ const Upload = () => {
         </Box>
         <Box className={classes.container12}>
           <Button variant="outlined" onClick={cancel}>Cancel</Button>
-          <Button disabled={loading} variant="contained" endIcon={<ArrowForwardIcon/>} onClick={analysed ? handleNext : handleAnalyzePdf}>
-            {analysed ? 'Open document' : ' Analyze'}
-          </Button>  
+          <Button
+            disabled={loading}
+            variant="contained"
+            endIcon={<ArrowForwardIcon />}
+            onClick={analysed ? handleNext : handleAnalyzePdf}
+            sx={{
+              backgroundColor: loading ? 'lightgrey' : 'black',
+              color: loading ? 'grey' : 'white',
+            }}
+          >
+            {analysed ? 'Open document' : 'Analyze'}
+          </Button>
         </Box>
       </Box>
     </Box>
