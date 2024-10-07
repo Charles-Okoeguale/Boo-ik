@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Paper, Typography, TextField, InputAdornment, IconButton, Switch, FormControlLabel, CircularProgress } from '@mui/material';
+import { Box, Typography, TextField, InputAdornment, IconButton, Switch, FormControlLabel, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useStyles } from './styles/chat_interface_styles';
 import { getAuth } from "firebase/auth"
@@ -7,7 +7,6 @@ import axios from 'axios';
 import TypewriterPaper from './typewriter';
 
 const ChatInterface = () => {
-    const [messages, setMessages] = useState([]);
     const [reply, setReply] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [contextual, setContextual] = useState(false); 
@@ -39,9 +38,9 @@ const ChatInterface = () => {
                 idToken: idToken,
                 type: contextual,
             });
+            setReply("")
             setIsLoading(false)
             setResult(response.data.response);
-            console.log('Response received:', response.data.response);
         } catch (error) {
             handleError(error);
             setIsLoading(false)
