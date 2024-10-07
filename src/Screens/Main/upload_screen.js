@@ -11,9 +11,8 @@ import UseAuth from '../../hook/useAuth';
 import Navbar from '../../components/navbar';
 import { handleFileChange, handleIconClick, logout } from '../../utils/handle_form';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify'; 
-import { getAuth } from "firebase/auth"
+import { handleAnalyzePdf } from '../../utils/handle_others';
 
 const Upload = () => {
   const currentUser = UseAuth();
@@ -28,69 +27,84 @@ const Upload = () => {
     value: PropTypes.number.isRequired,
   };
 
-  const handleAnalyzePdf = async () => {
-    if (!selectedFile) {
-      toast.warn('Please upload a PDF file.');
-      return;
-    }
+  //   if (!selectedFile) {
+  //     toast.warn('Please upload a PDF file.');
+  //     return;
+  //   }
   
-    setLoading(true);
-    setProgress(0);
+  //   setLoading(true);
+  //   setProgress(0);
   
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    formData.append('upload_preset', 'vpwyqduo');
+  //   const formData = new FormData();
+  //   formData.append('file', selectedFile);
+  //   formData.append('upload_preset', 'vpwyqduo');
   
+  //   try {
+  //     const uploadResponse = await axios.post(
+  //       'https://api.cloudinary.com/v1_1/dcm42p2eg/upload',
+  //       formData,
+  //       {
+  //         onUploadProgress: (progressEvent) => {
+  //           const percentCompleted = Math.round(
+  //             (progressEvent.loaded * 100) / progressEvent.total
+  //           );
+  //           setProgress(percentCompleted);
+  //         },
+  //       }
+  //     );
+  
+  //     const pdfUrl = uploadResponse.data.secure_url;
+
+  //     const user = getAuth().currentUser;
+  //     if (!user) {
+  //       throw new Error('User is not authenticated');
+  //     }
+  
+  //     const idToken = await user.getIdToken();
+
+  //     await axios.post('http://localhost:5000/api/process-pdf', {
+  //       pdfUrl,
+  //       idToken,
+  //     });
+
+  //     setAnalysed(true);
+  //     localStorage.setItem('pdfUrl', pdfUrl);
+  //     localStorage.setItem('pdfName',  selectedFile.name);
+  //     setProgress(100);
+  //     toast.success('PDF processed successfully!');
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response) {
+  //         console.error('Error response:', error.response);
+  //         toast.error(`Error: ${error.response.data.message || 'Failed to process PDF'}`);
+  //       } else if (error.request) {
+  //         console.error('Error request:', error.request);
+  //         toast.error('Server Error . Please try again later.');
+  //       }
+  //     } else {
+  //       console.error('Error message:', error.message);
+  //       toast.error(`Error: ${error.message}`);
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handleClick = async () => {
     try {
-      const uploadResponse = await axios.post(
-        'https://api.cloudinary.com/v1_1/dcm42p2eg/upload',
-        formData,
-        {
-          onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            setProgress(percentCompleted);
-          },
-        }
-      );
-  
-      const pdfUrl = uploadResponse.data.secure_url;
-
-      const user = getAuth().currentUser;
-      if (!user) {
-        throw new Error('User is not authenticated');
-      }
-  
-      const idToken = await user.getIdToken();
-
-      await axios.post('http://localhost:5000/api/process-pdf', {
-        pdfUrl,
-        idToken,
-      });
-
-      setAnalysed(true);
+      setLoading(true);
+      const { pdfUrl, pdfName } = await handleAnalyzePdf(selectedFile, setProgress);
       localStorage.setItem('pdfUrl', pdfUrl);
-      localStorage.setItem('pdfName',  selectedFile.name);
-      setProgress(100);
+      localStorage.setItem('pdfName', pdfName);
+      setAnalysed(true)
       toast.success('PDF processed successfully!');
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error('Error response:', error.response);
-          toast.error(`Error: ${error.response.data.message || 'Failed to process PDF'}`);
-        } else if (error.request) {
-          console.error('Error request:', error.request);
-          toast.error('Server Error . Please try again later.');
-        }
-      } else {
-        console.error('Error message:', error.message);
-        toast.error(`Error: ${error.message}`);
-      }
+      toast.error(`Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
+
   
 
   const handleNext = () => {
@@ -144,7 +158,7 @@ const Upload = () => {
             disabled={loading}
             variant="contained"
             endIcon={<ArrowForwardIcon />}
-            onClick={analysed ? handleNext : handleAnalyzePdf}
+            onClick={analysed ? handleNext : handleClick}
             sx={{
               backgroundColor: loading ? 'lightgrey' : 'black',
               color: loading ? 'grey' : 'white',
