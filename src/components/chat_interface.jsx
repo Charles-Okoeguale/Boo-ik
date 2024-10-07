@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Paper, Typography, TextField, InputAdornment, IconButton, Switch, FormControlLabel } from '@mui/material';
+import { Box, Paper, Typography, TextField, InputAdornment, IconButton, Switch, FormControlLabel, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useStyles } from './styles/chat_interface_styles';
 import { getAuth } from "firebase/auth"
@@ -32,17 +32,19 @@ const ChatInterface = () => {
         }
     
         try {
+            setIsLoading(true)
             const idToken = await user.getIdToken();
             const response = await axios.post('http://localhost:5000/api/process-query', {
                 prompt: reply,
                 idToken: idToken,
                 type: contextual,
             });
-    
+            setIsLoading(false)
             setResult(response.data.response);
             console.log('Response received:', response.data.response);
         } catch (error) {
             handleError(error);
+            setIsLoading(false)
         }
     };
     
@@ -90,8 +92,13 @@ const ChatInterface = () => {
                             <IconButton
                                 color="primary"
                                 onClick={handleSubmit}
+                                disabled={isLoading} 
                             >
-                                <SendIcon />
+                                {isLoading ? (
+                                    <CircularProgress size={24} color="inherit" /> 
+                                ) : (
+                                    <SendIcon /> 
+                                )}
                             </IconButton>
                         </InputAdornment>
                     ),
